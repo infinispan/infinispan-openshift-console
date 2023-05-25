@@ -60,12 +60,12 @@
     "webpack-dev-server": "^4.7.4"
   },
   "consolePlugin": {
-    "name": "console-plugin-template",
+    "name": "infinispan-openshift-console",
     "version": "0.0.1",
-    "displayName": "OpenShift Console Plugin Template",
-    "description": "Template project for OpenShift console plugins. Edit package.json to change this message and the plugin name.",
+    "displayName": "Infinispan Openshift Console Plugin",
+    "description": "Dynamic plugin for the OpenShift Console",
     "exposedModules": {
-      "ExamplePage": "./components/ExamplePage"
+      "ClustersList": "./components/Clusters/ClustersList"
     },
     "dependencies": {
       "@console/pluginAPI": "*"
