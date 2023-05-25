@@ -1,20 +1,29 @@
 [
   {
-    "type": "console.page/route",
+    "type": "console.navigation/section",
     "properties": {
-      "exact": true,
-      "path": "/example",
-      "component": { "$codeRef": "ExamplePage" }
+      "id": "datagrid",
+      "name": "Data Grid",
+      "insertAfter": "storage"
     }
   },
   {
     "type": "console.navigation/href",
     "properties": {
-      "id": "example",
-      "name": "Plugin Example",
-      "href": "/example",
-      "perspective": "admin",
-      "section": "home"
+      "prefixNamespaced": true,
+      "id": "clusters-list",
+      "section": "datagrid",
+      "name": "Clusters",
+      "href": "datagrid-clusters"
+    }
+  },
+  {
+    "type": "console.page/route",
+    "properties": {
+      "path": ["/k8s/ns/:ns/datagrid-clusters", "/k8s/all-namespaces/datagrid-clusters"],
+      "component": {
+        "$codeRef": "ClustersList"
+      }
     }
   }
 ]

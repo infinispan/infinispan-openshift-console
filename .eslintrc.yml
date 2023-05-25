@@ -16,9 +16,6 @@ plugins:
   - prettier
   - react
   - '@typescript-eslint'
-rules:
-  prettier/prettier:
-    - error
 settings:
   react:
     version: detect
