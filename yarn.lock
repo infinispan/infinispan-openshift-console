@@ -216,6 +216,24 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@openshift-console/dynamic-plugin-sdk-internal@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@openshift-console/dynamic-plugin-sdk-internal/-/dynamic-plugin-sdk-internal-0.0.11.tgz#b4d5302a5a1ff6952093e982c12493d921444bff"
+  integrity sha512-dCBBdPkeiNQ1R8iGTrugfBkg0eWtej5dq3DFNkXce4PJgz3iw8ccR2Rgya4UOMdNiUXcnrh+/ZrAQEpZLdUIsw==
+  dependencies:
+    "@patternfly/quickstarts" "2.0.1"
+    "@patternfly/react-core" "4.224.1"
+    "@patternfly/react-table" "4.93.1"
+    immutable "3.x"
+    react "^17.0.1"
+    react-helmet "^6.1.0"
+    react-i18next "^11.7.3"
+    react-redux "7.2.2"
+    react-router "5.2.0"
+    react-router-dom "5.2.0"
+    redux "4.0.1"
+    redux-thunk "2.4.0"
+
 "@openshift-console/dynamic-plugin-sdk-webpack@0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@openshift-console/dynamic-plugin-sdk-webpack/-/dynamic-plugin-sdk-webpack-0.0.7.tgz#9e412fedf4fcb13a030ff93b06fe225a5753ed6d"
@@ -3634,6 +3652,11 @@ ignore@^5.2.4:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
+
+immutable@3.x:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
+  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"

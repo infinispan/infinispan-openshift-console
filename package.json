@@ -22,6 +22,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.15.5",
     "@openshift-console/dynamic-plugin-sdk": "0.0.12",
+    "@openshift-console/dynamic-plugin-sdk-internal": "0.0.11",
     "@openshift-console/dynamic-plugin-sdk-webpack": "0.0.7",
     "@patternfly/react-core": "4.221.3",
     "@types/node": "^18.0.0",
