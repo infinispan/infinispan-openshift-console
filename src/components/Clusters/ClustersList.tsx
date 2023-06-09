@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useClusterList } from '../../services/clusterListHook';
-import { EmptyState, EmptyStateBody, EmptyStateIcon } from '@patternfly/react-core';
+import { EmptyState, EmptyStateBody, EmptyStateIcon, Label } from '@patternfly/react-core';
 import { CubesIcon } from '@patternfly/react-icons';
 import {
   ResourceLink,
@@ -15,6 +15,7 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 import ClusterListEmptyState from './ClusterListEmptyState';
 import ClusterCreateButton from './ClusterCreateButton';
+import { countCachesForCluster } from '../../utils/cacheCount';
 
 type ClustersListProps = {
   namespace: string;
@@ -23,6 +24,7 @@ type ClustersListProps = {
 const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
   const { clusters, loadError, loading } = useClusterList(namespace);
   const [data, filteredData, onFilterChange] = useListPageFilter(clusters);
+
   const groupVersionKind: K8sGroupVersionKind = {
     group: 'infinispan.org',
     version: 'v1',
@@ -41,6 +43,14 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
     {
       title: 'Namespace',
       id: 'namespace'
+    },
+    {
+      title: 'Cache count',
+      id: 'cacheCount'
+    },
+    {
+      title: 'Operand Version',
+      id: 'operandVersion'
     },
     {
       title: 'Create',
@@ -72,26 +82,37 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
           loadError={loadError}
           NoDataEmptyMsg={() => <ClusterListEmptyState namespace={namespace} />}
           EmptyMsg={EmptyMsg}
-          Row={({ obj, activeColumnIDs, rowData }) => (
-            <>
-              <TableData id={columns[0].id} activeColumnIDs={activeColumnIDs}>
-                <ResourceLink
-                  groupVersionKind={groupVersionKind}
-                  name={obj.metadata.name}
-                  namespace={obj.metadata.namespace}
-                />
-              </TableData>
-              <TableData id={columns[1].id} activeColumnIDs={activeColumnIDs}>
-                {obj['kind']}
-              </TableData>
-              <TableData id={columns[2].id} activeColumnIDs={activeColumnIDs}>
-                {obj['metadata']['namespace']}
-              </TableData>
-              <TableData id={columns[3].id} activeColumnIDs={activeColumnIDs}>
-                <Timestamp timestamp={obj['metadata']['creationTimestamp']} />
-              </TableData>
-            </>
-          )}
+          Row={({ obj, activeColumnIDs, rowData }) => {
+            const cacheCount = countCachesForCluster(obj.metadata.name, namespace);
+            return (
+              <>
+                <TableData id={columns[0].id} activeColumnIDs={activeColumnIDs}>
+                  <ResourceLink
+                    groupVersionKind={groupVersionKind}
+                    name={obj.metadata.name}
+                    namespace={obj.metadata.namespace}
+                  />
+                </TableData>
+                <TableData id={columns[1].id} activeColumnIDs={activeColumnIDs}>
+                  {obj['kind']}
+                </TableData>
+                <TableData id={columns[2].id} activeColumnIDs={activeColumnIDs}>
+                  {obj['metadata']['namespace']}
+                </TableData>
+                <TableData id={columns[3].id} activeColumnIDs={activeColumnIDs}>
+                  {cacheCount}
+                </TableData>
+                <TableData id={columns[4].id} activeColumnIDs={activeColumnIDs}>
+                  <Label variant={'outline'}>{obj['status']['operand']['version']}</Label>
+                </TableData>
+                <TableData id={columns[5].id} activeColumnIDs={activeColumnIDs}>
+                  <Timestamp timestamp={obj['metadata']['creationTimestamp']} />
+                </TableData>
+                {console.log('obj', obj)}
+                {console.log('rowData', rowData)}
+              </>
+            );
+          }}
         />
       </ListPageBody>
     </>
