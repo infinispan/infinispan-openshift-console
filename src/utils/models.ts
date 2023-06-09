@@ -13,4 +13,15 @@ export const InfinispanCluster: K8sModel = {
   namespaced: true
 };
 
+export const Cache: K8sModel = {
+  apiGroup: 'infinispan.org',
+  apiVersion: 'v2alpha1',
+  kind: 'Cache',
+  label: 'Cache',
+  labelPlural: 'Caches',
+  plural: 'caches',
+  abbr: 'C',
+  namespaced: true
+};
+
 export const InfinispanClusterModelRef = modelToRef(InfinispanCluster);
