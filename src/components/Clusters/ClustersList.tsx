@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useClusterList } from '../../services/clusterListHook';
-import { EmptyState, EmptyStateBody, EmptyStateIcon, Label } from '@patternfly/react-core';
+import { Button, EmptyState, EmptyStateBody, EmptyStateIcon, Label } from '@patternfly/react-core';
 import { CubesIcon } from '@patternfly/react-icons';
 import {
   ResourceLink,
@@ -16,6 +16,8 @@ import {
 import ClusterListEmptyState from './ClusterListEmptyState';
 import ClusterCreateButton from './ClusterCreateButton';
 import { countCachesForCluster } from '../../utils/cacheCount';
+import { clusterHealthHelper } from '../../utils/clusterHealth';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@patternfly/react-icons';
 
 type ClustersListProps = {
   namespace: string;
@@ -45,12 +47,20 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
       id: 'namespace'
     },
     {
+      title: 'Health',
+      id: 'health'
+    },
+    {
       title: 'Cache count',
       id: 'cacheCount'
     },
     {
       title: 'Operand Version',
       id: 'operandVersion'
+    },
+    {
+      title: 'Console link',
+      id: 'consoleLink'
     },
     {
       title: 'Create',
@@ -64,6 +74,28 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
         <EmptyStateIcon icon={CubesIcon} />
         <EmptyStateBody>No data found for applied filter</EmptyStateBody>
       </EmptyState>
+    );
+  };
+
+  const consoleLinkButton = (consoleLink) => {
+    return (
+      <a href={'http://' + consoleLink} rel="noreferrer" target="_blank">
+        <Button style={{ paddingLeft: 0 }} variant="link">
+          {consoleLink}
+        </Button>
+      </a>
+    );
+  };
+
+  const displayClusterHealth = (clusterHealth) => {
+    const color = clusterHealth ? 'green' : 'red';
+    const health = clusterHealth ? 'Healthy' : 'Unhealthy';
+    const healthIcon = clusterHealth ? <CheckCircleIcon /> : <ExclamationCircleIcon />;
+
+    return (
+      <Label icon={healthIcon} variant="outline" color={color}>
+        {health}
+      </Label>
     );
   };
 
@@ -84,6 +116,8 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
           EmptyMsg={EmptyMsg}
           Row={({ obj, activeColumnIDs, rowData }) => {
             const cacheCount = countCachesForCluster(obj.metadata.name, namespace);
+            const clusterHealth = clusterHealthHelper(obj.status);
+            const consoleLink = obj['spec']['expose']?.host;
             return (
               <>
                 <TableData id={columns[0].id} activeColumnIDs={activeColumnIDs}>
@@ -100,16 +134,20 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
                   {obj['metadata']['namespace']}
                 </TableData>
                 <TableData id={columns[3].id} activeColumnIDs={activeColumnIDs}>
-                  {cacheCount}
+                  {displayClusterHealth(clusterHealth)}
                 </TableData>
                 <TableData id={columns[4].id} activeColumnIDs={activeColumnIDs}>
-                  <Label variant={'outline'}>{obj['status']['operand']['version']}</Label>
+                  {cacheCount}
                 </TableData>
                 <TableData id={columns[5].id} activeColumnIDs={activeColumnIDs}>
+                  <Label variant={'outline'}>{obj['status']['operand']['version']}</Label>
+                </TableData>
+                <TableData id={columns[6].id} activeColumnIDs={activeColumnIDs}>
+                  {consoleLink ? consoleLinkButton(consoleLink) : 'Not exposed'}
+                </TableData>
+                <TableData id={columns[7].id} activeColumnIDs={activeColumnIDs}>
                   <Timestamp timestamp={obj['metadata']['creationTimestamp']} />
                 </TableData>
-                {console.log('obj', obj)}
-                {console.log('rowData', rowData)}
               </>
             );
           }}
