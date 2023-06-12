@@ -39,12 +39,12 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
       id: 'name'
     },
     {
-      title: 'Kind',
-      id: 'kind'
-    },
-    {
       title: 'Namespace',
       id: 'namespace'
+    },
+    {
+      title: 'Operand Version',
+      id: 'operandVersion'
     },
     {
       title: 'Health',
@@ -53,10 +53,6 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
     {
       title: 'Cache count',
       id: 'cacheCount'
-    },
-    {
-      title: 'Operand Version',
-      id: 'operandVersion'
     },
     {
       title: 'Console link',
@@ -128,10 +124,10 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
                   />
                 </TableData>
                 <TableData id={columns[1].id} activeColumnIDs={activeColumnIDs}>
-                  {obj['kind']}
+                  {obj['metadata']['namespace']}
                 </TableData>
                 <TableData id={columns[2].id} activeColumnIDs={activeColumnIDs}>
-                  {obj['metadata']['namespace']}
+                  <Label variant={'outline'}>{obj['status']['operand']['version']}</Label>
                 </TableData>
                 <TableData id={columns[3].id} activeColumnIDs={activeColumnIDs}>
                   {displayClusterHealth(clusterHealth)}
@@ -140,12 +136,9 @@ const ClustersList: FC<ClustersListProps> = ({ namespace }) => {
                   {cacheCount}
                 </TableData>
                 <TableData id={columns[5].id} activeColumnIDs={activeColumnIDs}>
-                  <Label variant={'outline'}>{obj['status']['operand']['version']}</Label>
-                </TableData>
-                <TableData id={columns[6].id} activeColumnIDs={activeColumnIDs}>
                   {consoleLink ? consoleLinkButton(consoleLink) : 'Not exposed'}
                 </TableData>
-                <TableData id={columns[7].id} activeColumnIDs={activeColumnIDs}>
+                <TableData id={columns[6].id} activeColumnIDs={activeColumnIDs}>
                   <Timestamp timestamp={obj['metadata']['creationTimestamp']} />
                 </TableData>
               </>
